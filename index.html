@@ -4,46 +4,235 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mentoria MRA - Método Reverso Aplicado > Simulado RPAT/RN V1</title>
+
   <style>
-    body{font-family:Arial,sans-serif;background:#fff;color:#1e293b;display:flex;justify-content:center;padding:24px;margin:0}
-    .container{max-width:900px;width:100%;border:1px solid #e2e8f0;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden;background:#fff}
-    header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
-    header img{height:90px}
-    h1{font-size:18px;color:#4338ca;margin:0}
-    .progress-container{display:flex;align-items:center;gap:12px;min-width:260px}
-    .progress-wrap{flex:1;height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}
-    .progress{height:100%;width:0%;background:#4338ca;transition:width .3s}
-    .progress-text{font-size:13px;color:#475569}
-    main{padding:24px}
-    .question{font-size:20px;margin:0 0 18px}
-    .options{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:12px}
-    .option{border:1px solid #e2e8f0;padding:14px;border-radius:12px;cursor:pointer;background:#fff;transition:all .15s ease}
-    .option.selected{outline:2px solid #4338ca;background:#fff}
-    .option.eliminated{background:#fff;color:#64748b;text-decoration:line-through;}
-    .option.correct{border-color:#16a34a;background:#ecfdf5}
-    .option.incorrect{border-color:#dc2626;background:#fef2f2}
-    .feedback{padding:12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;white-space:pre-wrap;margin-top:12px}
-    .feedback:empty{display:none;padding:0;border:0;margin:0}
-    .results{padding:24px;border-top:1px solid #e2e8f0;display:none;background:#f8fafc}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-    .chip{font-size:12px;border:1px solid #e2e8f0;padding:6px 10px;border-radius:999px;background:#fff;color:#4338ca}
-    .controls{display:flex;gap:8px;margin-top:12px}
-    .answer-wrap{position:relative;display:inline-block;margin-bottom:12px}
-    .answer-wrap .tip-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:125%;padding:10px 12px;border:1px dashed #94a3b8;border-radius:12px;background:#f8fafc;color:#334155;font-size:14px;display:none;opacity:0;box-shadow:0 6px 16px rgba(0,0,0,.08);white-space:nowrap;z-index:10}
-    .answer-wrap:hover .tip-hint{display:block;opacity:1}
-    .hidden{display:none !important}
+    body{
+      font-family:Arial,sans-serif;
+      background:#fff;
+      color:#1e293b;
+      display:flex;
+      justify-content:center;
+      padding:24px;
+      margin:0
+    }
+
+    .container{
+      max-width:900px;
+      width:100%;
+      border:1px solid #e2e8f0;
+      border-radius:20px;
+      box-shadow:0 4px 20px rgba(0,0,0,.08);
+      overflow:hidden;
+      background:#fff
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px;
+      border-bottom:1px solid #e2e8f0;
+      background:#f8fafc
+    }
+
+    header .brand-block{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0; /* para evitar quebra estranha em telas pequenas */
+    }
+
+    header img.logo-mra{
+      width:60px;
+      height:60px;
+      object-fit:contain;
+    }
+
+    header h1{
+      font-size:18px;
+      color:#4338ca;
+      margin:0;
+      line-height:1.3;
+    }
+
+    .progress-container{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:260px
+    }
+
+    .progress-wrap{
+      flex:1;
+      height:10px;
+      background:#e2e8f0;
+      border-radius:999px;
+      overflow:hidden
+    }
+
+    .progress{
+      height:100%;
+      width:0%;
+      background:#4338ca;
+      transition:width .3s
+    }
+
+    .progress-text{
+      font-size:13px;
+      color:#475569
+    }
+
+    main{
+      padding:24px
+    }
+
+    .question{
+      font-size:20px;
+      margin:0 0 18px
+    }
+
+    .options{
+      list-style:none;
+      padding:0;
+      margin:0 0 12px;
+      display:grid;
+      gap:12px
+    }
+
+    .option{
+      border:1px solid #e2e8f0;
+      padding:14px;
+      border-radius:12px;
+      cursor:pointer;
+      background:#fff;
+      transition:all .15s ease
+    }
+
+    .option.selected{
+      outline:2px solid #4338ca;
+      background:#fff
+    }
+
+    .option.eliminated{
+      background:#fff;
+      color:#64748b;
+      text-decoration:line-through;
+    }
+
+    .option.correct{
+      border-color:#16a34a;
+      background:#ecfdf5
+    }
+
+    .option.incorrect{
+      border-color:#dc2626;
+      background:#fef2f2
+    }
+
+    .opt-expl{
+      font-size:13px;
+      color:#475569;
+      margin-top:6px;
+      display:none;
+      white-space:pre-wrap;
+    }
+
+    .feedback{
+      padding:12px;
+      border:1px solid #e2e8f0;
+      border-radius:12px;
+      background:#f8fafc;
+      white-space:pre-wrap;
+      margin-top:12px
+    }
+
+    .feedback:empty{
+      display:none;
+      padding:0;
+      border:0;
+      margin:0
+    }
+
+    .results{
+      padding:24px;
+      border-top:1px solid #e2e8f0;
+      display:none;
+      background:#f8fafc
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px
+    }
+
+    .chip{
+      font-size:12px;
+      border:1px solid #e2e8f0;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#fff;
+      color:#4338ca
+    }
+
+    .controls{
+      display:flex;
+      gap:8px;
+      margin-top:12px
+    }
+
+    .answer-wrap{
+      position:relative;
+      display:inline-block;
+      margin-bottom:12px
+    }
+
+    .answer-wrap .tip-hint{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:125%;
+      padding:10px 12px;
+      border:1px dashed #94a3b8;
+      border-radius:12px;
+      background:#f8fafc;
+      color:#334155;
+      font-size:14px;
+      display:none;
+      opacity:0;
+      box-shadow:0 6px 16px rgba(0,0,0,.08);
+      white-space:nowrap;
+      z-index:10
+    }
+
+    .answer-wrap:hover .tip-hint{
+      display:block;
+      opacity:1
+    }
+
+    .hidden{
+      display:none !important
+    }
   </style>
 </head>
+
 <body>
 <div class="container">
   <header>
-    <img src="WhatsApp_Image_2025-09-10_at_12.25.04-removebg-preview.png" alt="Logo">
-    <h1>Mentoria MRA - Método Reverso Aplicado > Simulado RPAT/RN V1</h1>
+    <div class="brand-block">
+      <img src="logo.png" alt="Logo Mentoria MRA" class="logo-mra">
+      <h1>Mentoria MRA - Método Reverso Aplicado > Simulado RPAT/RN V1</h1>
+    </div>
+
     <div class="progress-container">
-      <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+      <div class="progress-wrap">
+        <div id="progress" class="progress"></div>
+      </div>
       <div id="progressText" class="progress-text">0%</div>
     </div>
   </header>
+
   <main>
     <div id="question-meta"></div>
     <h2 id="question" class="question"></h2>
@@ -52,7 +241,11 @@
     <!-- Botão responder + tooltip (hover) -->
     <div class="answer-wrap">
       <button id="answerBtn" disabled>Responder</button>
-      <div id="tipHint" class="tip-hint">💡 <b>Dica:</b> Use as teclas <b>A, B, C, D</b> para escolher, <b>Enter</b> para responder, e as setas <b>← / →</b> para navegar.</div>
+      <div id="tipHint" class="tip-hint">
+        💡 <b>Dica:</b> Use as teclas <b>A, B, C, D</b> para escolher,
+        <b>Enter</b> para responder,
+        e as setas <b>← / →</b> para navegar.
+      </div>
     </div>
 
     <div id="feedback" class="feedback"></div>
@@ -62,348 +255,19 @@
       <button id="nextBtn" disabled>Próxima ▶</button>
     </div>
   </main>
+
   <section id="results" class="results">
     <p id="scoreText"></p>
+
     <h3 style="margin:8px 0 0 0;color:#1e293b">Tópicos para revisar</h3>
     <div id="reviewChips" class="chips"></div>
+
     <div style="margin-top:12px">
       <button id="restartBtn">Refazer</button>
     </div>
   </section>
 </div>
+
 <script>
 // ====== DADOS DO QUIZ ======
-const quizData = [{"questionNumber": 1, "question": "De acordo com o Art. 24 do Regulamento, como são computados os prazos processuais no processo administrativo tributário do Rio Grande do Norte?", "answerOptions": [{"text": "Em dias corridos, com início no primeiro dia útil subsequente à ciência.", "isCorrect": false, "topic": "Prazos Processuais"}, {"text": "Em dias úteis, excluindo o dia do início e incluindo o do vencimento.", "isCorrect": true, "topic": "Prazos Processuais"}, {"text": "Em dias corridos, incluindo o dia do início e o do vencimento.", "isCorrect": false, "topic": "Prazos Processuais"}, {"text": "Em dias úteis, contando a partir do dia seguinte à ciência e terminando na véspera do vencimento.", "isCorrect": false, "topic": "Prazos Processuais"}], "justification": "Explicação:\\nA - Errada: fala em dias corridos.\\nB - Correta: Art. 24 do RPAT/RN determina prazos em dias úteis, excluído o dia do início e incluído o do vencimento.\\nC - Errada: usa dias corridos e inclui o dia inicial.\\nD - Errada: exclui o dia do vencimento."}, {"questionNumber": 2, "question": "Conforme o Art. 17, se uma intimação for disponibilizada no Domicílio Tributário Eletrônico (DTE-RN) e o contribuinte não a consultar, quando ela será considerada realizada?", "answerOptions": [{"text": "Após 30 dias da disponibilização, caso não haja consulta.", "isCorrect": false, "topic": "Intimação Eletrônica"}, {"text": "Na data em que o sistema registra a disponibilização da comunicação.", "isCorrect": false, "topic": "Intimação Eletrônica"}, {"text": "No dia do término do prazo de 10 dias, contados da data em que foi disponibilizada.", "isCorrect": true, "topic": "Intimação Eletrônica"}, {"text": "Somente quando o contribuinte efetivar a consulta eletrônica, não havendo prazo presumido.", "isCorrect": false, "topic": "Intimação Eletrônica"}], "justification": "Explicação:\\nA - Errada: não existe prazo de 30 dias.\\nB - Errada: ciência não ocorre na data da disponibilização sem consulta.\\nC - Correta: Art. 17 prevê ciência presumida no 10º dia após disponibilização.\\nD - Errada: a lei prevê ciência presumida, mesmo sem consulta."}, {"questionNumber": 3, "question": "Segundo o Art. 12, qual é o momento correto para um interessado arguir o impedimento ou a suspeição de uma autoridade no processo?", "answerOptions": [{"text": "Na primeira oportunidade em que couber ao interessado manifestar-se nos autos.", "isCorrect": true, "topic": "Impedimentos e Suspeição"}, {"text": "Apenas na petição de recurso voluntário para a segunda instância.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}, {"text": "No prazo de 10 dias após tomar conhecimento do fato que gera o impedimento.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}, {"text": "A qualquer momento antes da decisão de primeira instância.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}], "justification": "Explicação:\\nA - Correta: deve ser feita na primeira oportunidade em que couber manifestação.\\nB - Errada: restringe de forma incorreta à segunda instância.\\nC - Errada: o decreto não fixa prazo de 10 dias.\\nD - Errada: não pode ser arguida a qualquer tempo, apenas no momento oportuno inicial."}, {"questionNumber": 4, "question": "Qual é a consequência de incorreções ou omissões em um Auto de Infração, de acordo com o Art. 39, § 4º?", "answerOptions": [{"text": "O auto é automaticamente arquivado, e a ação fiscal é considerada encerrada.", "isCorrect": false, "topic": "Auto de Infração"}, {"text": "Geram uma multa acessória para o auditor fiscal que o lavrou, mas o auto permanece válido.", "isCorrect": false, "topic": "Auto de Infração"}, {"text": "Não acarretam a sua nulidade quando dele constarem elementos suficientes para determinar a infração e o infrator, e não resultar prejuízo à defesa.", "isCorrect": true, "topic": "Auto de Infração"}, {"text": "Acarretam a nulidade imediata do auto, que deve ser refeito pela autoridade fiscal.", "isCorrect": false, "topic": "Auto de Infração"}], "justification": "Explicação:\\nA - Errada: não há arquivamento automático.\\nB - Errada: não existe multa acessória ao auditor.\\nC - Correta: Art. 39, §4º aplica o princípio da instrumentalidade das formas, só há nulidade com prejuízo à defesa.\\nD - Errada: não há nulidade imediata sem prejuízo."}, {"questionNumber": 5, "question": "Conforme o Art. 114, em que situação a autoridade julgadora de primeira instância é obrigada a recorrer de ofício?", "answerOptions": [{"text": "Sempre que a decisão exonerar o sujeito passivo do pagamento de crédito tributário ou penalidade superior a R$ 15.000,00.", "isCorrect": true, "topic": "Recurso de Ofício"}, {"text": "Se o sujeito passivo, mesmo sendo vencedor, indicar que irá recorrer sobre um ponto específico da decisão.", "isCorrect": false, "topic": "Recurso de Ofício"}, {"text": "Em todas as decisões que resultem em anulação total do auto de infração, independentemente de valor.", "isCorrect": false, "topic": "Recurso de Ofício"}, {"text": "Quando a decisão for contrária a uma súmula do Conselho de Recursos Fiscais.", "isCorrect": false, "topic": "Recurso de Ofício"}], "justification": "Explicação:\\nA - Correta: Art. 114 obriga recurso de ofício quando o valor exonerado > R$ 15.000,00.\\nB - Errada: não depende da vontade do sujeito passivo.\\nC - Errada: não é toda anulação, só se superar o valor limite.\\nD - Errada: divergência com súmula não gera recurso automático."}, {"questionNumber": 6, "question": "O que acontece com o prazo para pagamento de um tributo quando o contribuinte apresenta uma consulta sobre a matéria, de acordo com o Art. 143?", "answerOptions": [{"text": "O prazo continua a correr normalmente, mas as multas são anistiadas se a resposta for favorável.", "isCorrect": false, "topic": "Consulta Tributária"}, {"text": "O prazo é interrompido e recomeça a contar do zero após a resposta.", "isCorrect": false, "topic": "Consulta Tributária"}, {"text": "O prazo de exigibilidade da obrigação é suspenso.", "isCorrect": true, "topic": "Consulta Tributária"}, {"text": "A obrigação é extinta, caso a consulta seja considerada pertinente.", "isCorrect": false, "topic": "Consulta Tributária"}], "justification": "Explicação:\\nA - Errada: prazo não continua correndo.\\nB - Errada: não há interrupção, mas suspensão.\\nC - Correta: Art. 143 suspende a exigibilidade da obrigação enquanto consulta não respondida.\\nD - Errada: consulta não extingue obrigação."}, {"questionNumber": 7, "question": "Segundo o Art. 156-D, qual o prazo que o contribuinte tem para apresentar impugnação contra uma decisão que indefere um pedido de restituição de indébito?", "answerOptions": [{"text": "60 dias, desde que apresente novas provas documentais.", "isCorrect": false, "topic": "Restituição de Indébito"}, {"text": "10 dias, contados da notificação do indeferimento.", "isCorrect": false, "topic": "Restituição de Indébito"}, {"text": "30 dias, contados da notificação do indeferimento.", "isCorrect": true, "topic": "Restituição de Indébito"}, {"text": "15 dias, contados da publicação da decisão no Diário Oficial.", "isCorrect": false, "topic": "Restituição de Indébito"}], "justification": "Explicação:\\nA - Errada: não existe prazo de 60 dias.\\nB - Errada: o prazo não é de 10 dias.\\nC - Correta: Art. 156-D fixa 30 dias da notificação.\\nD - Errada: prazo não é contado da publicação no Diário Oficial."}, {"questionNumber": 8, "question": "Qual é o prazo regular para a conclusão de uma ação fiscal após seu início, conforme o Art. 37?", "answerOptions": [{"text": "90 dias corridos, sem possibilidade de prorrogação.", "isCorrect": false, "topic": "Ação Fiscal"}, {"text": "30 dias úteis, prorrogável uma única vez por igual período.", "isCorrect": false, "topic": "Ação Fiscal"}, {"text": "60 dias corridos, prorrogável a critério da chefia imediata.", "isCorrect": true, "topic": "Ação Fiscal"}, {"text": "180 dias corridos, alinhado ao prazo de julgamento de processos.", "isCorrect": false, "topic": "Ação Fiscal"}], "justification": "Explicação:\\nA - Errada: não é 90 dias.\\nB - Errada: não são 30 dias úteis.\\nC - Correta: Art. 37 fixa 60 dias corridos, prorrogáveis pela chefia.\\nD - Errada: não há prazo de 180 dias."}, {"questionNumber": 9, "question": "Se a autoridade julgadora de primeira instância não proferir uma decisão no prazo legal, o que o sujeito passivo pode fazer, de acordo com o Art. 112?", "answerOptions": [{"text": "Considerar o litígio automaticamente encerrado a seu favor por decurso de prazo.", "isCorrect": false, "topic": "Julgamento em Primeira Instância"}, {"text": "Apresentar uma denúncia à corregedoria contra a autoridade julgadora, o que suspende o processo.", "isCorrect": false, "topic": "Julgamento em Primeira Instância"}, {"text": "Requerer à autoridade julgadora a remessa do processo à instância superior, presumindo-se a decisão desfavorável em primeira instância.", "isCorrect": true, "topic": "Julgamento em Primeira Instância"}, {"text": "Entrar com uma ação judicial para obrigar a autoridade a julgar o processo.", "isCorrect": false, "topic": "Julgamento em Primeira Instância"}], "justification": "Explicação:\\nA - Errada: não há encerramento automático a favor do sujeito passivo.\\nB - Errada: denúncia não suspende processo.\\nC - Correta: Art. 112 permite requerer remessa à instância superior, presumindo decisão desfavorável.\\nD - Errada: não é previsão administrativa, mas apenas judicial."}, {"questionNumber": 10, "question": "Conforme o Art. 178-A, o que pode ser exigido de um contribuinte que solicita um parcelamento de ICMS, mas possui débitos inscritos em dívida ativa?", "answerOptions": [{"text": "O recolhimento de uma parcela inicial equivalente a 20% dos débitos consolidados.", "isCorrect": true, "topic": "Parcelamento de Débitos"}, {"text": "A quitação integral de todos os débitos em dívida ativa antes da concessão do parcelamento.", "isCorrect": false, "topic": "Parcelamento de Débitos"}, {"text": "A apresentação de uma garantia real, como hipoteca de imóvel.", "isCorrect": false, "topic": "Parcelamento de Débitos"}, {"text": "A assinatura de um termo de confissão de dívida com renúncia a qualquer defesa futura.", "isCorrect": false, "topic": "Parcelamento de Débitos"}], "justification": "Explicação:\\nA - Correta: Art. 178-A exige parcela inicial de 20% dos débitos consolidados.\\nB - Errada: não exige quitação integral.\\nC - Errada: não exige garantia real.\\nD - Errada: não prevê termo de renúncia a defesa."}];
-
-// ====== ESTADO ======
-let currentIndex=0,score=0,locked=false;
-const progressEl=document.getElementById('progress');
-const progressText=document.getElementById('progressText');
-const metaEl=document.getElementById('question-meta');
-const questionEl=document.getElementById('question');
-const optionsEl=document.getElementById('options');
-const feedbackEl=document.getElementById('feedback');
-const nextBtn=document.getElementById('nextBtn');
-const prevBtn=document.getElementById('prevBtn');
-const answerBtn=document.getElementById('answerBtn');
-const resultsEl=document.getElementById('results');
-const scoreText=document.getElementById('scoreText');
-const reviewChips=document.getElementById('reviewChips');
-const restartBtn=document.getElementById('restartBtn');
-
-const topicsToReview = new Set();
-let userAnswers = Array(quizData.length).fill(null); // {selectedIndex, isCorrect}
-let tempSelectedIndex=null; // seleção pré-resposta
-let preSel = Array(quizData.length).fill(null);
-let preElim = Array(quizData.length).fill(null).map(()=>new Set());
-
-// ====== UTILS ======
-function parseJustifications(justText, numOptions){
-  const exps = Array(numOptions).fill("");
-  if(!justText) return exps;
-  const body = justText.replace(/^\\s*Explicação:\\s*/i, "").trim();
-  const lines = body.split(/\\n+/).map(s=>s.trim()).filter(Boolean);
-  const map = {};
-  lines.forEach(line=>{
-    const m = line.match(/^([A-ZÀ-Ý])\\s*[-–:]\\s*(.*)$/i);
-    if(m){
-      const letter = m[1].toUpperCase();
-      map[letter] = m[2].trim();
-    }
-  });
-  for(let i=0;i<numOptions;i++){
-    const letter = String.fromCharCode(65+i);
-    exps[i] = map[letter] ? map[letter] : "";
-  }
-  return exps;
-}
-
-function hasAnySelected(){
-  return [...optionsEl.children].some(el=>el.getAttribute('data-state')==='selected');
-}
-
-function savePreAnswerState(){
-  const elim = new Set();
-  let sel = null;
-  [...optionsEl.children].forEach((el,i)=>{
-    const st = el.getAttribute('data-state')||'neutral';
-    if(st==='selected') sel = i;
-    if(st==='eliminated') elim.add(i);
-  });
-  preSel[currentIndex] = sel;
-  preElim[currentIndex] = elim;
-}
-
-function restorePreAnswerState(){
-  const sel = preSel[currentIndex];
-  const elim = preElim[currentIndex] || new Set();
-  [...optionsEl.children].forEach((el,i)=>{
-    el.classList.remove('selected','eliminated');
-    el.setAttribute('data-state','neutral');
-    if(elim.has(i)){
-      el.classList.add('eliminated');
-      el.setAttribute('data-state','eliminated');
-    }
-  });
-  if(sel!==null && sel!==undefined){
-    const li = optionsEl.children[sel];
-    if(li){ li.classList.add('selected'); li.setAttribute('data-state','selected'); }
-    tempSelectedIndex = sel;
-    answerBtn.disabled = false;
-  } else {
-    tempSelectedIndex = null;
-    answerBtn.disabled = true;
-  }
-}
-
-// ====== RENDER ======
-function renderQuestion(){
-  const q=quizData[currentIndex];
-  const total=quizData.length;
-  const pct=(currentIndex/total)*100;
-  progressEl.style.width=pct+"%";
-  progressText.textContent=Math.round(pct)+"%";
-  metaEl.textContent=`Questão ${q.questionNumber} de ${total}`;
-  questionEl.textContent=q.question;
-
-  optionsEl.innerHTML="";
-  q.answerOptions.forEach((opt,idx)=>{
-    const li=document.createElement('li');
-    li.className="option";
-    li.setAttribute('data-correct',opt.isCorrect?"1":"0");
-    li.setAttribute('data-state','neutral');
-    li.innerHTML=`<strong>${String.fromCharCode(65+idx)})</strong> ${opt.text}<div class="opt-expl"></div>`;
-    li.addEventListener('click',()=>selectOption(idx));
-    optionsEl.appendChild(li);
-  });
-
-  feedbackEl.textContent="";
-  feedbackEl.innerHTML="";
-  nextBtn.disabled=true; locked=false;
-  tempSelectedIndex=null; answerBtn.disabled=true;
-
-  // restaurar estados de pré-resposta (seleção / eliminadas) se ainda não respondida
-  restorePreAnswerState();
-
-  // Se já respondeu esta questão, restaurar cores, explicações e mensagem motivacional
-  const saved = userAnswers[currentIndex];
-  if(saved){
-    // limpar estados visuais de pré-resposta
-    [...optionsEl.children].forEach(opt=>{
-      opt.classList.remove('correct','incorrect','selected','eliminated');
-      opt.setAttribute('data-state','neutral');
-    });
-
-    const opts = [...optionsEl.children];
-    // aplicar cores conforme regra
-    if(saved.isCorrect){
-      opts[saved.selectedIndex]?.classList.add('correct');
-    } else {
-      opts[saved.selectedIndex]?.classList.add('incorrect');
-      const correctOpt = opts.find(o => o.getAttribute('data-correct') === "1");
-      if(correctOpt) correctOpt.classList.add('correct');
-    }
-
-    // mostrar explicações por alternativa
-    const expsR = parseJustifications(q.justification, q.answerOptions.length);
-    opts.forEach((optEl,i)=>{
-      const span = optEl.querySelector('.opt-expl');
-      if(span){ span.textContent = expsR[i] || ''; span.style.display='block'; }
-    });
-
-    // mensagem motivacional
-    if(saved.isCorrect){
-      feedbackEl.innerHTML = "<strong style='color:#16a34a'>Parabéns! Você acertou! Apaixone-se por estudar, pois isso mudará a sua vida.</strong>";
-    } else {
-      feedbackEl.innerHTML = "<strong style='color:#dc2626'>Alternativa incorreta! Mas lembre-se, você não erra... Você acerta ou aprende.</strong>";
-    }
-
-    nextBtn.disabled = false;
-    answerBtn.disabled = true;
-    locked = true;
-  }
-
-  prevBtn.disabled = currentIndex === 0;
-}
-
-// ====== INTERAÇÃO ======
-function selectOption(idx){
-  if(locked) return;
-  const li = optionsEl.children[idx];
-  const cur = li.getAttribute('data-state') || 'neutral';
-
-  let next = 'neutral';
-  if(cur==='neutral') next='selected';
-  else if(cur==='selected') next='eliminated';
-  else if(cur==='eliminated') next='neutral';
-
-  // selecionar => garantir única selecionada
-  if(next==='selected'){
-    [...optionsEl.children].forEach((opt,i)=>{
-      if(i!==idx && opt.getAttribute('data-state')==='selected'){
-        opt.classList.remove('selected');
-        opt.setAttribute('data-state','neutral');
-      }
-    });
-  }
-  li.classList.remove('selected','eliminated');
-  li.setAttribute('data-state', next);
-  if(next==='selected') li.classList.add('selected');
-  if(next==='eliminated') li.classList.add('eliminated');
-
-  tempSelectedIndex = hasAnySelected() ? [...optionsEl.children].findIndex(el=>el.getAttribute('data-state')==='selected') : null;
-  answerBtn.disabled = tempSelectedIndex===null;
-
-  savePreAnswerState();
-}
-
-function handleAnswerByIndex(idx){
-  if(locked) return;
-  if(idx===null || idx===undefined) return;
-  locked = true;
-
-  const li = optionsEl.children[idx];
-  const isCorrect = li.getAttribute('data-correct') === "1";
-  const q = quizData[currentIndex];
-
-  // Remover estados de pré-resposta e neutralizar
-  [...optionsEl.children].forEach(opt=>{
-    opt.classList.remove('correct','incorrect','selected','eliminated');
-    opt.setAttribute('data-state','neutral');
-  });
-
-  // Aplicar cores conforme regra
-  if(isCorrect){
-    li.classList.add('correct');
-  } else {
-    li.classList.add('incorrect');
-    const correctOpt = [...optionsEl.children].find(o => o.getAttribute('data-correct') === "1");
-    if(correctOpt) correctOpt.classList.add('correct');
-  }
-
-  // Pontuação e revisão
-  if(isCorrect){
-    score++;
-  } else {
-    const topic = (q.answerOptions && q.answerOptions[0] && q.answerOptions[0].topic) ? q.answerOptions[0].topic : "";
-    if(topic) topicsToReview.add(topic);
-  }
-
-  // Registrar resposta do usuário
-  userAnswers[currentIndex] = { selectedIndex: idx, isCorrect };
-
-  // Explicações por alternativa
-  const exps = parseJustifications(q.justification, q.answerOptions.length);
-  [...optionsEl.children].forEach((optEl,i)=>{
-    const span = optEl.querySelector('.opt-expl');
-    if(span){ span.textContent = exps[i] || ''; span.style.display='block'; }
-  });
-
-  // Mensagem motivacional
-  if(isCorrect){
-    feedbackEl.innerHTML = "<strong style='color:#16a34a'>Parabéns! Você acertou! Apaixone-se por estudar, pois isso mudará a sua vida.</strong>";
-  } else {
-    feedbackEl.innerHTML = "<strong style='color:#dc2626'>Alternativa incorreta! Mas lembre-se, você não erra... Você acerta ou aprende.</strong>";
-  }
-
-  nextBtn.disabled = false;
-  answerBtn.disabled = true;
-}
-
-function nextQuestion(){
-  if(currentIndex<quizData.length-1){
-    currentIndex++; renderQuestion();
-  } else { showResults(); }
-}
-
-function prevQuestion(){
-  if(currentIndex>0){
-    currentIndex--; renderQuestion();
-  }
-}
-
-function showResults(){
-  progressEl.style.width="100%";
-  progressText.textContent="100%";
-  document.querySelector('main').style.display="none";
-  resultsEl.style.display="block";
-  scoreText.textContent=`Você acertou ${score} de ${quizData.length} questões (${Math.round((score/quizData.length)*100)}%).`;
-
-  // chips de revisão
-  reviewChips.innerHTML="";
-  if(topicsToReview.size===0){
-    const span=document.createElement('span');
-    span.className="chip";
-    span.textContent="Nenhum tópico marcado 🎯";
-    reviewChips.appendChild(span);
-  } else {
-    [...topicsToReview].forEach(t=>{
-      const span=document.createElement('span');
-      span.className="chip";
-      span.textContent=t;
-      reviewChips.appendChild(span);
-    });
-  }
-}
-
-function restart(){
-  currentIndex=0; score=0; topicsToReview.clear();
-  userAnswers = Array(quizData.length).fill(null);
-  preSel = Array(quizData.length).fill(null);
-  preElim = Array(quizData.length).fill(null).map(()=>new Set());
-  document.querySelector('main').style.display="block";
-  resultsEl.style.display="none";
-  renderQuestion();
-}
-
-// ====== ATALHOS DE TECLADO ======
-document.addEventListener('keydown', (e)=>{
-  // Evitar atalhos se já estiver na tela de resultados
-  if(resultsEl.style.display === "block") return;
-
-  const key = e.key.toLowerCase();
-  const letters = { 'a':0, 'b':1, 'c':2, 'd':3 };
-
-  // Seleção / eliminação via A/B/C/D (cicla como o clique)
-  if(!locked && key in letters){
-    const idx = letters[key];
-    if(optionsEl.children[idx]){
-      selectOption(idx);
-      e.preventDefault();
-    }
-  }
-
-  // Enter para responder (se houver seleção e não estiver bloqueado)
-  if(key === 'enter'){
-    if(!locked && typeof tempSelectedIndex === 'number'){
-      handleAnswerByIndex(tempSelectedIndex);
-      e.preventDefault();
-    }
-  }
-
-  // Setas para navegar
-  if(key === 'arrowleft'){
-    if(currentIndex > 0){
-      prevQuestion();
-      e.preventDefault();
-    }
-  }
-  if(key === 'arrowright'){
-    if(!nextBtn.disabled){
-      nextQuestion();
-      e.preventDefault();
-    }
-  }
-});
-
-// ====== EVENTS (cliques) ======
-nextBtn.addEventListener('click',nextQuestion);
-prevBtn.addEventListener('click',prevQuestion);
-answerBtn.addEventListener('click',()=>handleAnswerByIndex(tempSelectedIndex));
-restartBtn.addEventListener('click',restart);
-
-// Inicializar
-renderQuestion();
-</script>
-</body>
-</html>
+const quizData = [{"questionNumber": 1, "question": "De acordo com o Art. 24 do Regulamento, como são computados os prazos processuais no processo administrativo tributário do Rio Grande do Norte?", "answerOptions": [{"text": "Em dias corridos, com início no primeiro dia útil subsequente à ciência.", "isCorrect": false, "topic": "Prazos Processuais"}, {"text": "Em dias úteis, excluindo o dia do início e incluindo o do vencimento.", "isCorrect": true, "topic": "Prazos Processuais"}, {"text": "Em dias corridos, incluindo o dia do início e o do vencimento.", "isCorrect": false, "topic": "Prazos Processuais"}, {"text": "Em dias úteis, contando a partir do dia seguinte à ciência e terminando na véspera do vencimento.", "isCorrect": false, "topic": "Prazos Processuais"}], "justification": "Explicação:\nA - Errada: fala em dias corridos.\nB - Correta: Art. 24 do RPAT/RN determina prazos em dias úteis, excluído o dia do início e incluído o do vencimento.\nC - Errada: usa dias corridos e inclui o dia inicial.\nD - Errada: exclui o dia do vencimento."}, {"questionNumber": 2, "question": "Conforme o Art. 17, se uma intimação for disponibilizada no Domicílio Tributário Eletrônico (DTE-RN) e o contribuinte não a consultar, quando ela será considerada realizada?", "answerOptions": [{"text": "Após 30 dias da disponibilização, caso não haja consulta.", "isCorrect": false, "topic": "Intimação Eletrônica"}, {"text": "Na data em que o sistema registra a disponibilização da comunicação.", "isCorrect": false, "topic": "Intimação Eletrônica"}, {"text": "No dia do término do prazo de 10 dias, contados da data em que foi disponibilizada.", "isCorrect": true, "topic": "Intimação Eletrônica"}, {"text": "Somente quando o contribuinte efetivar a consulta eletrônica, não havendo prazo presumido.", "isCorrect": false, "topic": "Intimação Eletrônica"}], "justification": "Explicação:\nA - Errada: não existe prazo de 30 dias.\nB - Errada: ciência não ocorre na data da disponibilização sem consulta.\nC - Correta: Art. 17 prevê ciência presumida no 10º dia após disponibilização.\nD - Errada: a lei prevê ciência presumida, mesmo sem consulta."}, {"questionNumber": 3, "question": "Segundo o Art. 12, qual é o momento correto para um interessado arguir o impedimento ou a suspeição de uma autoridade no processo?", "answerOptions": [{"text": "Na primeira oportunidade em que couber ao interessado manifestar-se nos autos.", "isCorrect": true, "topic": "Impedimentos e Suspeição"}, {"text": "Apenas na petição de recurso voluntário para a segunda instância.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}, {"text": "No prazo de 10 dias após tomar conhecimento do fato que gera o impedimento.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}, {"text": "A qualquer momento antes da decisão de primeira instância.", "isCorrect": false, "topic": "Impedimentos e Suspeição"}], "justification": "Explicação:\nA - Correta: deve ser feita na primeira oportunidade em que couber manifestação.\nB - Errada: restringe de forma incorreta à segunda instância.\nC - Errada: o decreto não fixa prazo de 10 dias.\nD - Errada: não pode ser arguida a qualquer tempo, apenas no momento oportuno inicial."}, {"questionNumber": 4, "question": "Qual é a consequência de incorreções ou omissões em um Auto de Infração, de acordo com o Art. 39, § 4º?", "answerOptions": [{"text": "O auto é automaticamente arquivado, e a ação fiscal é considerada encerrada.", "isCorrect": false, "topic": "Auto de Infração"}, {"text": "Geram uma multa acessória para o auditor fiscal que o lavrou, mas o auto permanece válido.", "isCorrect": false, "topic": "Auto de Infração"}, {"text": "Não acarretam a sua nulidade quando dele constarem elementos suficientes para determinar a infração e o infrator, e não resultar prejuízo à defesa.", "isCorrect": true, "topic": "Auto de Infração"}, {"text": "Acarretam a nulidade imediata do auto, que deve ser refeito pela autoridade fiscal.", "isCorrect": false, "topic": "Auto de Infração"}], "justification": "Explicação:\nA - Errada: não há arquivamento automático.\nB - Errada: não existe multa acessória ao auditor.\nC - Correta: Art. 39, §4º aplica o princípio da instrumentalidade das formas, só há nulidade com prejuízo à defesa.\nD - Errada: não há nulidade imediata sem prejuízo."}, {"questionNumber": 5, "question": "Conforme o Art. 114, em que situação a autoridade julgadora de primeira instância é obrigada a recorrer de ofício?", "answerOptions": [{"text": "Sempre que a decisão exonerar o sujeito passivo do pagamento de crédito tributário ou penalidade superior a R$ 15.000,00.", "isCorrect": true, "topic": "Recurso de Ofício"}, {"text": "Se o sujeito passivo, mesmo sendo vencedor, indicar que irá recorrer sobre um ponto específico da decisão.", "isCorrect": false, "topic": "Recurso de Ofício"}, {"text": "Em todas as decisões que resultem em anulação total do auto de infração, independentemente de valor.", "isCorrect": false, "topic": "Recurso de Ofício"}, {"text": "Quando a decisão for contrária a uma súmula do Conselho de Recursos Fiscais.", "isCorrect": false, "topic": "Recurso de Ofício"}], "justification": "Explicação:\nA - Correta: Art. 114 obriga recurso de ofício quando o valor exonerado > R$ 15.000,00.\nB - Errada: não depende da vontade do sujeito passivo.\nC - Errada: não é toda anulação, só se superar o valor limite.\nD - Errada: divergência com súmula não gera recurso automático."}, {"questionNumber": 6, "question": "O que acontece com o prazo para pagamento de um tributo quando o contribuinte apresenta uma consulta sobre a matéria, de acordo com o Art. 143?", "answerOptions": [{"text": "O prazo continua a correr normalmente, mas as multas são anistiadas se a resposta for favorável.", "isCorrect": false, "topic": "Consulta Tributária"}, {"text": "O prazo é interrompido e recomeça a contar do zero após a resposta.", "isCorrect": false, "topic": "Consulta Tributária"}, {"text": "O prazo de exigibilidade da obrigação é suspenso.", "isCorrect": true, "topic": "Consulta Tributária"}, {"text": "A obrigação é extinta, caso a consulta seja considerada pertinente.", "isCorrect": false, "topic": "Consulta Tributária"}], "justification": "Explicação:\nA - Errada: prazo não continua correndo.\nB - Errada: não há interrupção, mas suspensão.\nC - Correta: Art. 143 suspende a exigibilidade da obrigação enquanto consulta não respondida.\nD - Errada: consulta não extingue obrigação."}, {"questionNumber": 7, "question": "Segundo o Art. 156-D, qual o prazo que o contribuinte tem para apresentar impugnação contra uma decisão que indefere um pedido de restituição de indébito?", "answerOptions": [{"text": "60 dias, desde que apresente novas provas documentais.", "isCorrect": false, "topic": "Restituição de Indébito"}, {"text": "10 dias, contados da notificação do indeferimento.", "isCorrect": false, "topic": "Restituição de Indébito"}, {"text": "30 dias, contados da notific]()]()
